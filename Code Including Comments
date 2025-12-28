@@ -1,0 +1,174 @@
+import sys #This is used for a way to exit the program once the user has chose to
+
+'''
+Made by Yohan Tongol CY LV4 C1
+'''
+
+itemp = float(0)
+cashbalance=float(0)
+stock={"C1":{"snack":'Snickers', 'price':3.00, 'stock':5,'logo':'🍫'}, 
+       "C2":{"snack":'Ferrero ', 'price': 4.00, 'stock': 5,'logo':'🍫'},
+       "D1":{"snack":'Water   ','price': 1.00, 'stock': 5,'logo':'🥤'},
+       "D2":{"snack":'Sprite  ', 'price': 2.50, 'stock': 5,'logo':'🥤'},   
+       "J1":{"snack":'Cheetos ', 'price': 1.50, 'stock': 5,'logo':'🍿'},
+       "J2":{"snack":'Lays    ','price': 2.50,'stock':5,'logo':'🍿'}}
+#The stock dictionary is for the storage of the items as well as its price and stock
+print("")
+
+
+def menu(stock): #This is the stock function which once called will display all the
+#stock in a proper manner
+ for key,key1 in stock.items(): #this works by using a for loop to call each key properly
+     print(f"[{key}] {key1['snack']}  |{key1['price']}AED   |{key1['stock']} in stock    ||")
+
+def question(): #This function is for once the user has completed a purchase.
+#it will first ask the user if they wish to continue browsing. the if else statement
+#helps choose what happens depending on the user input. ###
+    while True:
+        ans=input("Would you like to continue browsing?. Y or N:| ").upper()
+        if ans == "N":###
+            print("================================================")
+            cashbalance == 0 #returning money --- 💵
+            print(f"Thank You and come again! Balance of {cashbalance} returned")
+            print("\n")
+            sys.exit(1)
+        elif ans == "Y":###
+            print("Loading Menu...")
+            print("================================================")
+            menu(stock)
+            machine()  
+        else:###
+            print("\n--Invalid option please Choose between Y or N.--\n")
+          
+       
+def screen(): #This function is only used to display information about the VM
+#purely for design and to call upon the stock
+ print("================================================||")   
+ name = "Vending Machine                  ||\n-Trademark and Licensed By Yohan Tongol -       ||"
+ print(f"Welcome to the {name}\nPlease Enter your order  ")
+ print("================================================||")     
+ print("Items to Choose:")
+ menu(stock)  
+ print("================================================")
+
+def cashinput(): #The cashinput function is self explanatory. Once called it will
+#ask the user to input a balance which will then be stored inside a variable
+#which will then be added into the global total balance variable. If user inputs
+#anything other than a float or integer, it will display the error messages and loop
+ print("Please Insert Cash Balance 🪙| Insert Up to 100 AED Only")
+ while True:
+  try:
+      global cashbalance
+      cash=float(input("|:"))
+      if 0.25<= cash <=100:
+         cashbalance += cash
+         print(f"Successfully stored {cash} AED")
+         print("================================================")
+         break;
+      else:
+          print("\nOnly bills up to 100 AED is allowed, Please Enter a bill ranging from 1- 100 AED")
+  except ValueError:
+      print("\nInvalid Cash Input. Please Enter a Number")   
+
+
+def machine(): #The machine function serves as the main system of the vending machine.
+#If else statements and loops are used once the user input has been stored inside
+#choice variable and calls out to different functions to proceed to payment
+#and makes it possible for the user to buy items until stock reaches 0.
+#machine function also includes the suggestion function which helps to intelligently 
+#suggest to the user which item they can buy depending on the previous item bought.
+ while True:
+   try:
+    global itemp
+    global cashbalance
+    print(f"-Choose Your Item- Press 'N' to quit purchase.\nCurrent Balance: {cashbalance}")
+    choice = input("|: ").upper()    
+    def suggestion():
+         if item['logo'] == '🍫':
+              print("\nWe suggest you buy 🥤 to follow up with your 🍫:")
+              item1 = stock['D1']  
+              item2 = stock['D2']
+              print(f"|{item1['snack']}|Price:{item1['price']}|  {item1['stock']} in stock|")
+              print(f"|{item2['snack']}|Price:{item2['price']}|  {item2['stock']} in stock|")
+         elif item['logo'] == '🥤':
+             print("\nWe suggest you buy 🍿 follow up with your 🥤:")
+             item1 = stock['J1']  
+             item2 = stock['J2']
+             print(f"|{item1['snack']}|Price:{item1['price']}|  {item1['stock']} in stock|")
+             print(f"|{item2['snack']}|Price:{item2['price']}|  {item2['stock']} in stock|")
+         elif item['logo'] == '🍿':
+             print("\nWe suggest you buy 🍫 to accompany your 🍿:")
+             item1 = stock['C1']  
+             item2 = stock['C2']
+             print(f"|{item1['snack']}|Price:{item1['price']}|  {item1['stock']} in stock|")
+             print(f"|{item2['snack']}|Price:{item2['price']}|  {item2['stock']} in stock|")
+  
+    if choice == "N":
+        print("Quiting... Thank you and Come again!") 
+        sys.exit
+        print("")
+        sys.exit(1)
+        break
+
+    if choice not in stock:
+        print("\nItem Code Does Not Exist Within The Vending Machine.\nPlease Try Again. ")
+        print("------------------------------------------------------")
+        continue
+    item=stock[choice]
+    print("================================================")
+    while item['stock'] != 0:
+    
+     if cashbalance > item['price']:
+         cashbalance -= item['price']
+         item['stock']-=1   
+         itemp += item['price']
+         print(f"Chosen item: | {item['snack']}|\nPrice: {itemp} AED\n{item['stock']} In Stock") 
+         print(f"\nDispensing Item...**{item['logo']}**\n\nReturning Change of {cashbalance} To Your Total Balance")
+         itemp -= item['price']
+         print(f"Current Balance: {cashbalance}")
+         suggestion()
+         print("================================================")
+         question() 
+        
+     elif cashbalance == item['price']:
+        print("================================================")
+        item['stock']-=1   
+        itemp += item['price']
+        print(f"Chosen item: | {item['snack']}|\nPrice: {itemp} AED\n{item['stock']} In Stock") 
+        print(f"\nDispensing Item...**{item['logo']}**")
+        itemp -= item['price']
+        print("\nThank you for your purchase!")
+        cashbalance -= item['price']
+        print(f"Current Balance: {cashbalance}")
+        suggestion()
+        print("================================================")
+        question()
+    
+     elif cashbalance < item['price']:
+        print(f"Please give the appropriate amount for your item.\n\n|Item Price: {item['price']}|\n|Current Balance: {cashbalance}|")
+        cashinput()
+    item['stock']  <= 0
+    item['stock'] == 0
+    item['price'] == 0
+    print("|--Sorry we have ran out of that item!--|")
+    
+   except ValueError:
+     print("This is a ERROR Please Try again")
+ 
+     
+#This specific lines of code are purely for user engagement and vending machine
+#introduction. It serves as a way for the user to choose if they wish to use a vending
+#machine, Just like in real life.
+print("|What stands before you is a Vending Machine. Do you use it?| \n'Y' For Yes, 'N' For No")
+decision=input(":|").upper()
+while True:
+ if decision == "Y":
+  screen()
+  machine()
+ elif decision =="N":
+      print("--The Vending Machine waves you goodbye as you leave.--")
+      break
+ else:
+     print("--That option dosen't come across your mind.. Try again.--")
+     decision=input(":|").upper()
+
