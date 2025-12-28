@@ -45,7 +45,7 @@ def screen(): #This function is only used to display information about the VM
 #purely for design and to call upon the stock
  print("================================================||")   
  name = "Vending Machine                  ||\n-Trademark and Licensed By Yohan Tongol -       ||"
- print(f"Welcome to the {name}\nPlease Enter your order  ")
+ print(f"Welcome to the {name}\nPlease Enter your order                         ||  ")
  print("================================================||")     
  print("Items to Choose:")
  menu(stock)  
