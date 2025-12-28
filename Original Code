@@ -41,7 +41,7 @@ def question():
 def screen():
  print("================================================||")   
  name = "Vending Machine                  ||\n-Trademark and Licensed By Yohan Tongol -       ||"
- print(f"Welcome to the {name}\nPlease Enter your order  ")
+ print(f"Welcome to the {name}\nPlease Enter your order                         ||  ")
  print("================================================||")     
  print("Items to Choose:")
  menu(stock)  
